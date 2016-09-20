@@ -1,0 +1,20 @@
+{
+  "name": "open-data-canada",
+  "version": "1.0.0",
+  "description": "Exploratory project of Open Data 500 for Canada",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alec Barrett (@anbnyc)",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^13.1.0",
+    "d3": "^4.2.4",
+    "govlab-styleguide": "^1.0.20",
+    "jquery": "^3.1.0",
+    "lodash": "^4.16.0",
+    "prismjs": "^1.5.1",
+    "slick": "^1.12.2"
+  }
+}
