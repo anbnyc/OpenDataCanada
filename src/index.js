@@ -89,6 +89,9 @@
         var sankeyData = parseSankey(data);
         buildSankey(sankeyData);
 
+        var barData = parseBar(data);
+        buildBar(barData);
+
     };
 
     function buildSankey(data){
@@ -105,7 +108,7 @@
             height: 500,
             parent: d3.select('#sankey'),
             values: 'basic5',
-            width: 1000
+            width: 900
         };
 
         sankey.c = d3.init(options);
@@ -115,7 +118,19 @@
     };
 
     function parseBar(data){
+        
+        var barData = _.chain(data)
+            .map(o => o.how_important_is_open_data_to_your_company)
+            .countBy()
+            .map(function(key,value){
+                return {
+                    howImportant: key,
+                    value: value
+                }
+            })
+            .value();
 
+        return barData;
     };
 
     function buildBar(data){
