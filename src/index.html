@@ -43,7 +43,7 @@
         <div class="b-page-section">
             <div class="row">
                 <div class="e-card m-blue">
-                    <a href="#sankey">
+                    <a href="#sankey-row">
                         <div class="e-card-inner">
                             <p class="e-card-name">Industry-Data Type Connections</p>
                             <p class="e-card-description">Project Description</p>
@@ -51,9 +51,9 @@
                     </a>
                 </div>
                 <div class="e-card m-blue">
-                    <a href="#bar">
+                    <a href="#bar-row">
                         <div class="e-card-inner">
-                            <p class="e-card-name">Project Name</p>
+                            <p class="e-card-name">Importance of Open Data to Companies</p>
                             <p class="e-card-description">Project Description</p>
                         </div>
                     </a>
@@ -61,26 +61,34 @@
                 <div class="e-card m-blue">
                     <a href="#">
                         <div class="e-card-inner">
-                            <p class="e-card-name">Project Name</p>
+                            <p class="e-card-name">Locations of Respondents in Canada</p>
                             <p class="e-card-description">Project Description</p>
                         </div>
                     </a>
                 </div>
             </div>
-            <div class="b-divider">
+            <div class="b-divider" id="sankey-row">
                 <h2>Industry-Data Types Connections</h2>
             </div>
-            <div class="row">
+            <div class="row" >
                 <div class="large-10 large-centered columns">
                     <div class="deethree" id="sankey"></div>
                 </div>
             </div>
-            <div class="b-divider">
+            <div class="b-divider" id="bar-row">
                 <h2>Importance of Open Data</h2>
             </div>
             <div class="row">
                 <div class="large-10 large-centered columns">
                     <div class="deethree" id="bar"></div>
+                </div>
+            </div>
+            <div class="b-divider" id="map-row">
+                <h2>Location of Respondents in Canada</h2>
+            </div>
+            <div class="row">
+                <div class="large-10 large-centered columns">
+                    <div class="deethree b-map" id="map"></div>
                 </div>
             </div>
         </div>
@@ -124,7 +132,8 @@
     <script src="../node_modules/govlab-styleguide/js/scripts.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
     <script src="https://unpkg.com/d3-sankey@0"></script>
-    <script src="https://cdn.rawgit.com/anbnyc/d3-starterkit/nvps/d3-nvpstools-v4.js"><script>
+    <script src="https://cdn.rawgit.com/1wheel/d3-starterkit/master/d3-jetpack.js"></script>
+    <script src="https://rawgit.com/anbnyc/d3-starterkit/nvps/d3-nvpstools-v4.js"><script>
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -5,6 +5,7 @@
     var $ = require('jquery');
     window.d3 = require('d3');
     window._ = require('lodash');
+    window.topojson = require('topojson');
 
     function getData(){
         
@@ -18,6 +19,19 @@
         });
 
         return;
+
+    };
+
+    function controller(data){
+
+        var sankeyData = parseSankey(data);
+        buildSankey(sankeyData);
+
+        var barData = parseBar(data);
+        buildBar(barData);
+
+        var mapData = parseMap(data);
+        buildMap(mapData);
 
     };
 
@@ -84,16 +98,6 @@
 
     };
 
-    function controller(data){
-
-        var sankeyData = parseSankey(data);
-        buildSankey(sankeyData);
-
-        var barData = parseBar(data);
-        buildBar(barData);
-
-    };
-
     function buildSankey(data){
 
         var sankey = {};
@@ -119,10 +123,34 @@
 
     function parseBar(data){
         
+        var vizValues = {
+            "Very Important/Très importantes": {
+                rank: 1,
+                color: 'purple40'
+            },
+            "Important/Importantes": {
+                rank: 2,
+                color: 'purple20'
+            },
+            "Fairly Important/Légèrement importantes": {
+                rank: 3,
+                color: 'purple'
+            },
+            "Slightly Important": {
+                rank: 4,
+                color: 'lightgray'
+            }
+        };
+
         var barData = _.chain(data)
-            .map(o => o.how_important_is_open_data_to_your_company)
+            .map(function(o){
+                var key = _.filter(_.keys(vizValues), function(p){
+                    return p.search(o.how_important_is_open_data_to_your_company) !== -1;
+                });
+                return key[0];
+            })
             .countBy()
-            .map(function(key,value){
+            .map(function(value,key){
                 return {
                     howImportant: key,
                     value: value
@@ -130,10 +158,85 @@
             })
             .value();
 
-        return barData;
+        return { barData: barData, vizValues: vizValues };
     };
 
     function buildBar(data){
+
+        var bar = {};
+        
+        var options = {
+            data: data.barData,
+            dims: {
+                x: 'howImportant',
+                y: 'value',
+                color: 'howImportant',
+                label: 'value',
+                yLabel: 'Responses'
+            },
+            element: 'rect',
+            height: 500,
+            parent: d3.select('#bar'),
+            values: data.vizValues,
+            width: 900
+        };
+
+        bar.c = d3.init(options);
+        bar.c = d3.resize(bar.c);
+        bar.c = d3.update(bar.c);
+    };
+
+    function parseMap(data){
+
+        var mapData = _.chain(data)
+                .map('province')
+                .countBy()
+                .value();
+
+        return mapData;
+
+    };
+
+    function buildMap(data){
+
+        var width = 900,
+            height = 500;
+
+        var projection = d3.geoAlbers()
+            .scale(1 / 2 / Math.PI)
+            .translate([-96,64]);
+            
+            // .center([-96,64])
+            // .translate([width / 2, height / 2]);
+
+        // projection
+        //     .scale(1 / 2 / Math.PI)
+        //     .translate([0, 0]);
+
+        var path = d3.geoPath()
+            .projection(projection);
+
+        var svg = d3.select('#map').append('svg')
+            .attr('width',width)
+            .attr('height',height);
+
+        d3.json("ca-all.geo.json", function(error,geojson){
+            _.each(geojson.features,function(feature){
+                var accentFreeName = feature.properties.name ? feature.properties.name.replace('é','e') : '';
+                if(_.keys(data).indexOf(accentFreeName) !== -1){
+                    feature.properties.companies = data[accentFreeName];
+                }
+            });
+
+            svg.selectAll('path')
+                .data(geojson.features)
+                .enter().append('path')
+                .attr("class","border")
+                .style("fill","#ffffff")
+                .style("stroke","#000000")
+                .attr("d",path);
+
+        });
 
     };
 
