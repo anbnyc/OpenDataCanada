@@ -43272,7 +43272,7 @@ return jQuery;
                 controller(data);
             }
         });
-    };
+    }
 
     function controller(data){
 
@@ -43286,7 +43286,7 @@ return jQuery;
         var mapData = parseMap(data);
         buildMap(mapData);
 
-    };
+    }
 
     function parseSankey(data){
 
@@ -43297,12 +43297,12 @@ return jQuery;
 
         var nodeTypes = [
             {
-                name: 'source',
-                variable: 'what_industry_best_describes_your_company'
+                name: "source",
+                variable: "what_industry_best_describes_your_company"
             },
             {
-                name: 'target',
-                variable: 'what_types_of_open_data_does_your_company_use'
+                name: "target",
+                variable: "what_types_of_open_data_does_your_company_use"
             }
         ];
 
@@ -43311,7 +43311,7 @@ return jQuery;
 
             var newNodes = _.chain(data)
                 .reduce(function(sum,value){
-                    return sum.concat(value[nodeType.variable])
+                    return sum.concat(value[nodeType.variable]);
                 },[])
                 .uniq()
                 .map(function(each){
@@ -43319,7 +43319,7 @@ return jQuery;
                     return {
                         node: i,
                         name: nodeType.name+"_"+each
-                    }
+                    };
                 })
                 .value();
 
@@ -43331,8 +43331,8 @@ return jQuery;
             var dataset = x.what_types_of_open_data_does_your_company_use;
             _.each(industry, function(ind){
                 _.each(dataset, function(dat){
-                    var source = _.find(sankeyData.nodes, {'name': 'source_'+ind}).node;
-                    var target = _.find(sankeyData.nodes, {'name': 'target_'+dat}).node;
+                    var source = _.find(sankeyData.nodes, {"name": "source_"+ind}).node;
+                    var target = _.find(sankeyData.nodes, {"name": "target_"+dat}).node;
                     var exists = _.filter(sankeyData.links, o => o.source === source && o.target === target );
                     if(exists.length > 0){
                         exists[0].value++;
@@ -43349,7 +43349,7 @@ return jQuery;
 
         return sankeyData;
 
-    };
+    }
 
     function buildSankey(data){
 
@@ -43358,13 +43358,13 @@ return jQuery;
         var options = {
             data: data,
             dims: {
-                x: 'industry',
-                y: 'dataset'
+                x: "industry",
+                y: "dataset"
             },
-            element: 'sankey',
+            element: "sankey",
             height: 500,
-            parent: d3.select('#sankey'),
-            values: 'basic5',
+            parent: d3.select("#sankey"),
+            values: "basic5",
             width: 900
         };
 
@@ -43372,26 +43372,26 @@ return jQuery;
         sankey.c = d3.resize(sankey.c);
         sankey.c = d3.update(sankey.c);
 
-    };
+    }
 
     function parseBar(data){
         
         var vizValues = {
-            "Very Important/Très importantes": {
+            'Very Important/Très importantes': {
                 rank: 1,
-                color: 'purple40'
+                color: "purple40"
             },
-            "Important/Importantes": {
+            'Important/Importantes': {
                 rank: 2,
-                color: 'purple20'
+                color: "purple20"
             },
-            "Fairly Important/Légèrement importantes": {
+            'Fairly Important/Légèrement importantes': {
                 rank: 3,
-                color: 'purple'
+                color: "purple"
             },
-            "Slightly Important": {
+            'Slightly Important': {
                 rank: 4,
-                color: 'lightgray'
+                color: "lightgray"
             }
         };
 
@@ -43407,12 +43407,12 @@ return jQuery;
                 return {
                     howImportant: key,
                     value: value
-                }
+                };
             })
             .value();
 
         return { barData: barData, vizValues: vizValues };
-    };
+    }
 
     function buildBar(data){
 
@@ -43421,15 +43421,15 @@ return jQuery;
         var options = {
             data: data.barData,
             dims: {
-                x: 'howImportant',
-                y: 'value',
-                color: 'howImportant',
-                label: 'value',
-                yLabel: 'Responses'
+                x: "howImportant",
+                y: "value",
+                color: "howImportant",
+                label: "value",
+                yLabel: "Responses"
             },
-            element: 'rect',
+            element: "rect",
             height: 500,
-            parent: d3.select('#bar'),
+            parent: d3.select("#bar"),
             values: data.vizValues,
             width: 900
         };
@@ -43437,18 +43437,18 @@ return jQuery;
         bar.c = d3.init(options);
         bar.c = d3.resize(bar.c);
         bar.c = d3.update(bar.c);
-    };
+    }
 
     function parseMap(data){
 
         var mapData = _.chain(data)
-                .map('province')
+                .map("province")
                 .countBy()
                 .value();
 
         return mapData;
 
-    };
+    }
 
     function buildMap(data){
 
@@ -43466,8 +43466,8 @@ return jQuery;
             .attr('width',width)
             .attr('height',height);
 
-        // file from https://raw.github.com/mdgnkm/SIG-Map/master/canada.json
-        d3.json("assets/canada.json", function(error,geojson){
+        // file downloaded from https://raw.github.com/mdgnkm/SIG-Map/master/canada.json
+        d3.json('assets/canada.json', function(error,geojson){
             _.each(geojson.features,function(feature){
                 // var accentFreeName = feature.properties.NAME ? feature.properties.NAME.replace('é','e') : '';
                 if(_.keys(data).indexOf(feature.properties.NAME) !== -1){
@@ -43475,15 +43475,13 @@ return jQuery;
                 }
             });
 
-            var centroids = [];
-
             svg.selectAll('path')
                 .data(geojson.features)
                 .enter().append('path')
-                .attr("class","border")
-                .style("fill","#ffffff")
-                .style("stroke","#000000")
-                .attr("d",path);
+                .attr('class','border')
+                .style('fill','#ffffff')
+                .style('stroke','#000000')
+                .attr('d',path);
 
             var groups = svg.selectAll('g')
                 .data(geojson.features)
@@ -43493,8 +43491,8 @@ return jQuery;
             groups.append('circle')
                 .attr('cx',(d) => path.centroid(d)[0])
                 .attr('cy',(d) => path.centroid(d)[1])
-                .style("fill",'#381759')
-                .attr('r', (d) => d.properties ? (d.properties.companies ? 5+d.properties.companies : 0 ) : 5)
+                .style('fill','#381759')
+                .attr('r', (d) => d.properties ? (d.properties.companies ? 5+d.properties.companies : 0 ) : 5);
 
             groups.append('text')
                 .attr('class','label-text')
@@ -43502,11 +43500,11 @@ return jQuery;
                 .attr('y',(d) => path.centroid(d)[1])
                 .attr('opacity',1)
                 .style('color','#000000')
-                .html((d) => d.properties.NAME + ": " + (d.properties.companies ? d.properties.companies : 0));
+                .html((d) => d.properties.NAME + ': ' + (d.properties.companies ? d.properties.companies : 0));
 
         });
 
-    };
+    }
 
     getData();
 

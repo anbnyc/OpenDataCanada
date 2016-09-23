@@ -4,6 +4,7 @@ This project uses the GovLab styleguide and data from the GovLab API. This is *n
 ### Steps to run locally
 * `npm install`
 * Run a local server (e.g., `python -m SimpleHTTPServer 3000`)
+* Open `/src/`
 
 ### Tasks to develop
 * `browserify src/index.js > src/bundle.js`
