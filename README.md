@@ -11,7 +11,7 @@ This project uses the GovLab styleguide and data from the GovLab API. This is *n
 * `sass src/styles/index.scss > src/styles.index.css`
 
 ### Feature wishlist
-* Move tasks to develop to a gulp tasks
+* Combine above tasks in a gulp task
 * Add drilldown functionality to graphs
 * Rewrite HTML to reduce repetition
 * Add detailed tooltips to graphs
