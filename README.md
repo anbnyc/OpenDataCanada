@@ -15,3 +15,4 @@ This project uses the GovLab styleguide and data from the GovLab API. This is *n
 * Add drilldown functionality to vizes
 * Rewrite HTML to reduce repetition
 * Add detailed tooltips to vizes
+* Reorganize stylesheets
