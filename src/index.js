@@ -5,25 +5,21 @@
     var $ = require('jquery');
     window.d3 = require('d3');
     window._ = require('lodash');
-    window.topojson = require('topojson');
 
     function getData(){
-        
-        var data;
 
+        // API request sends data to controller
         $.ajax({
             url: 'http://api.opendata500.com/api/v1/results/Canada',
             success: function(data){
                 controller(data);
             }
         });
-
-        return;
-
     };
 
     function controller(data){
 
+        // for each viz, shape data then pass to d3
         var sankeyData = parseSankey(data);
         buildSankey(sankeyData);
 
@@ -42,36 +38,36 @@
             links: []
         };
 
+        var nodeTypes = [
+            {
+                name: 'source',
+                variable: 'what_industry_best_describes_your_company'
+            },
+            {
+                name: 'target',
+                variable: 'what_types_of_open_data_does_your_company_use'
+            }
+        ];
+
         var i = -1;
-        var sourceNodes = _.chain(data)
-            .reduce(function(sum,value){
-                return sum.concat(value.what_industry_best_describes_your_company)
-            },[])
-            .uniq()
-            .map(function(each){
-                i++;
-                return {
-                    node: i,
-                    name: 'source_'+each
-                }
-            })
-            .value();
+        for (let nodeType of nodeTypes){
 
-        var targetNodes = _.chain(data)
-            .reduce(function(sum,value){
-                return sum.concat(value.what_types_of_open_data_does_your_company_use)
-            },[])
-            .uniq()
-            .map(function(each){
-                i++;
-                return {
-                    node: i,
-                    name: 'target_'+each
-                }
-            })
-            .value();
+            var newNodes = _.chain(data)
+                .reduce(function(sum,value){
+                    return sum.concat(value[nodeType.variable])
+                },[])
+                .uniq()
+                .map(function(each){
+                    i++;
+                    return {
+                        node: i,
+                        name: nodeType.name+"_"+each
+                    }
+                })
+                .value();
 
-        sankeyData.nodes = sourceNodes.concat(targetNodes);
+            sankeyData.nodes = sankeyData.nodes.concat(newNodes);
+        }
 
         _.each(data,function(x){
             var industry = x.what_industry_best_describes_your_company;
@@ -199,19 +195,12 @@
 
     function buildMap(data){
 
-        var width = 900,
+        var width = 1000,
             height = 500;
 
         var projection = d3.geoAlbers()
-            .scale(1 / 2 / Math.PI)
-            .translate([-96,64]);
-            
-            // .center([-96,64])
-            // .translate([width / 2, height / 2]);
-
-        // projection
-        //     .scale(1 / 2 / Math.PI)
-        //     .translate([0, 0]);
+            .scale(800)
+            .translate([400,550]);
 
         var path = d3.geoPath()
             .projection(projection);
@@ -220,13 +209,16 @@
             .attr('width',width)
             .attr('height',height);
 
-        d3.json("ca-all.geo.json", function(error,geojson){
+        // file downloaded from https://raw.github.com/mdgnkm/SIG-Map/master/canada.json
+        d3.json("assets/canada.json", function(error,geojson){
             _.each(geojson.features,function(feature){
-                var accentFreeName = feature.properties.name ? feature.properties.name.replace('é','e') : '';
-                if(_.keys(data).indexOf(accentFreeName) !== -1){
-                    feature.properties.companies = data[accentFreeName];
+                // var accentFreeName = feature.properties.NAME ? feature.properties.NAME.replace('é','e') : '';
+                if(_.keys(data).indexOf(feature.properties.NAME) !== -1){
+                    feature.properties.companies = data[feature.properties.NAME];
                 }
             });
+
+            var centroids = [];
 
             svg.selectAll('path')
                 .data(geojson.features)
@@ -235,6 +227,25 @@
                 .style("fill","#ffffff")
                 .style("stroke","#000000")
                 .attr("d",path);
+
+            var groups = svg.selectAll('g')
+                .data(geojson.features)
+                .enter().append('g')
+                .attr('class','map-circle');
+
+            groups.append('circle')
+                .attr('cx',(d) => path.centroid(d)[0])
+                .attr('cy',(d) => path.centroid(d)[1])
+                .style("fill",'#381759')
+                .attr('r', (d) => d.properties ? (d.properties.companies ? 5+d.properties.companies : 0 ) : 5)
+
+            groups.append('text')
+                .attr('class','label-text')
+                .attr('x',(d) => path.centroid(d)[0])
+                .attr('y',(d) => path.centroid(d)[1])
+                .attr('opacity',1)
+                .style('color','#000000')
+                .html((d) => d.properties.NAME + ": " + (d.properties.companies ? d.properties.companies : 0));
 
         });
 

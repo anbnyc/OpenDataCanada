@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Govlab</title>
+    <title>OD500 Canada</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="//use.typekit.net/zez3buj.js"></script>
     <script>try{Typekit.load();}catch(e){}</script>
@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../node_modules/prismjs/themes/prism.css" />
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/index.css">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
 </head>
 <body id="">
     <header class="b-top-nav">
@@ -37,7 +38,7 @@
     <main role="main">
         <!-- main content starts here -->
         <div class="b-top-section m-purple">
-            <h1>Open Data 150 Canada</h1>
+            <h1>Open Data 500 Canada</h1>
             <h3>Prototype by Alec Barrett</h3>
         </div>
         <div class="b-page-section">
@@ -46,7 +47,7 @@
                     <a href="#sankey-row">
                         <div class="e-card-inner">
                             <p class="e-card-name">Industry-Data Type Connections</p>
-                            <p class="e-card-description">Project Description</p>
+                            <p class="e-card-description">What is the relationship between types of companies and the types of open data they indicated that they use? Are there any unexpected connections?</p>
                         </div>
                     </a>
                 </div>
@@ -54,15 +55,15 @@
                     <a href="#bar-row">
                         <div class="e-card-inner">
                             <p class="e-card-name">Importance of Open Data to Companies</p>
-                            <p class="e-card-description">Project Description</p>
+                            <p class="e-card-description">How did respondents answer the question, "How important is open data to your company?" What can we learn from the companies at each end of this distribution?</p>
                         </div>
                     </a>
                 </div>
                 <div class="e-card m-blue">
-                    <a href="#">
+                    <a href="#map-row">
                         <div class="e-card-inner">
                             <p class="e-card-name">Locations of Respondents in Canada</p>
-                            <p class="e-card-description">Project Description</p>
+                            <p class="e-card-description">What provinces were represented in our responses? Does proximity to the center of government make companies more likely to use open data?</p>
                         </div>
                     </a>
                 </div>
@@ -133,7 +134,7 @@
     <script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
     <script src="https://unpkg.com/d3-sankey@0"></script>
     <script src="https://cdn.rawgit.com/1wheel/d3-starterkit/master/d3-jetpack.js"></script>
-    <script src="https://rawgit.com/anbnyc/d3-starterkit/nvps/d3-nvpstools-v4.js"><script>
+    <script src="https://cdn.rawgit.com/anbnyc/d3-starterkit/910803f0989a8d48be4e6bac288d6930844d3694/d3-nvpstools-v4.js"></script>
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
