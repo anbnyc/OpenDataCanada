@@ -12,7 +12,7 @@ This project uses the GovLab styleguide and data from the GovLab API. This is *n
 
 ### Feature wishlist
 * Move tasks to develop to a gulp tasks
-* Add drilldown functionality to vizes
+* Add drilldown functionality to graphs
 * Rewrite HTML to reduce repetition
-* Add detailed tooltips to vizes
+* Add detailed tooltips to graphs
 * Reorganize stylesheets
