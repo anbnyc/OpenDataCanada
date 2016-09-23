@@ -43496,7 +43496,7 @@ return jQuery;
 
             groups.append('text')
                 .attr('class','label-text')
-                .attr('x',(d) => path.centroid(d)[0])
+                .attr('x',(d) => path.centroid(d)[0] + (d.properties ? (d.properties.companies ? 7+d.properties.companies : 0 ) : 7))
                 .attr('y',(d) => path.centroid(d)[1])
                 .attr('opacity',1)
                 .style('color','#000000')
